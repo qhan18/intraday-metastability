@@ -1,6 +1,3 @@
-# intraday-metastability
-Online metastability detection and potential-based regime modeling for intraday markets.
-
 # Online Metastability Detection for Intraday Markets
 
 This project explores whether short-horizon market dynamics can be described by a changing local **potential landscape**, and whether features derived from that landscape help improve forecasting.
