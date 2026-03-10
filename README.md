@@ -4,7 +4,9 @@ This project explores whether short-horizon market dynamics can be described by 
 
 The pipeline estimates a nonparametric local drift and diffusion from rolling windows of high-frequency price data, reconstructs an implied potential \(U(x)\), labels the window as `single_well`, `double_well`, or `unclear`, and then tests whether those regime features add value to simple prediction tasks.
 
-The current notebook run should be viewed as a **pipeline validation and research prototype**, not a final trading result. The goal at this stage is to evaluate whether the full workflow behaves sensibly and whether the regime features appear informative enough to justify a stronger next version.
+**The current public notebook run uses synthetic data to validate the end-to-end research pipeline.** The goal at this stage is to confirm that the full workflow behaves sensibly, produces interpretable structural outputs, and supports downstream modeling before moving to real market data.
+
+The current notebook run should therefore be viewed as a **pipeline validation and research prototype**, not a final trading result.
 
 ---
 
@@ -50,6 +52,25 @@ Predict realized volatility over the next fixed horizon.
 Predict whether short-horizon direction continues or reverses relative to recent momentum.
 
 These are intentionally simple first targets. They let us test whether potential-based regime features are adding information beyond standard lagged return, volume, and liquidity features.
+
+---
+
+## Data
+
+The current public version uses synthetic high-frequency data to validate the estimation and modeling pipeline. This choice was practical: the most relevant real high-frequency datasets either require paid access, additional API setup, or more data-engineering infrastructure for reliable ingestion than was available for this initial prototype. The goal of this stage was to validate the end-to-end research workflow first, then move to real market data in a later version. 
+
+This synthetic setup is useful because it allows the project to test:
+- whether rolling drift and diffusion estimation works
+- whether the implied potential can be reconstructed cleanly
+- whether regime labels are stable and interpretable
+- whether the downstream ML pipeline runs end to end
+
+At this stage, the synthetic run is serving as a **research sandbox**, not as evidence of live trading performance or real-market alpha.
+
+The intended next step is to apply the same framework to real high-frequency datasets such as:
+- Uniswap v3 pool data
+- centralized limit-order-book data
+- other trade-level intraday market data
 
 ---
 
@@ -161,13 +182,13 @@ This is a **good prototype** but **not yet a strong final result**.
 
 The current run supports the claim that:
 
-> the pipeline can estimate and use potential-based regime features in a stable way
+> the pipeline can estimate and use potential-based regime features in a stable and interpretable way
 
 But it does **not yet support** the stronger claim that:
 
 > metastability-based features clearly improve short-horizon forecasting
 
-That makes this a promising research direction, but one that still needs a stronger empirical version.
+So the project has moved beyond the stage of being only an interesting idea, but it still needs stronger empirical lift before it becomes a standout quantitative research result.
 
 ---
 
@@ -175,19 +196,22 @@ That makes this a promising research direction, but one that still needs a stron
 
 The current run highlights several limitations:
 
-1. **Regime imbalance**  
+1. **Synthetic-data evaluation only**  
+   The current public results are from synthetic data used for pipeline validation, not real market data.
+
+2. **Regime imbalance**  
    Double-well states are too rare to drive strong results.
 
-2. **Weak predictive uplift**  
+3. **Weak predictive uplift**  
    Potential features do not materially improve the volatility model, and only marginally affect classification accuracy.
 
-3. **Simple model class**  
+4. **Simple model class**  
    Random forests are convenient for a prototype, but they are not necessarily the best model for structured time-series forecasting.
 
-4. **No strict walk-forward tuning**  
+5. **No strict walk-forward tuning**  
    This version uses a straightforward time split rather than a more careful walk-forward cross-validation design.
 
-5. **Structural signal may need richer state inputs**  
+6. **Structural signal may need richer state inputs**  
    The current setup uses price-based local structure plus simple liquidity/volume variables. A stronger version should condition more explicitly on market state.
 
 ---
@@ -219,6 +243,12 @@ Use:
 - calibration checks
 - horizon sensitivity analysis
 
+### Move to real data
+Run the same framework on:
+- Uniswap v3 data
+- centralized order-book data
+- other high-frequency trade-level datasets
+
 ### Add a better economic target
 Instead of only forecasting volatility and continuation, test whether regime features help predict:
 - adverse selection
@@ -243,7 +273,7 @@ The current evidence suggests that the structural features are **plausible and p
 
 In one sentence:
 
-> This project has crossed the “interesting idea” stage and reached the “working research prototype” stage, but it still needs stronger regime detection and stronger empirical lift to become a standout quant result.
+> This project has crossed the “interesting idea” stage and reached the “working research prototype” stage, but it still needs real-data validation, stronger regime detection, and stronger empirical lift to become a standout quant result.
 
 ---
 
